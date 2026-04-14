@@ -1,0 +1,11 @@
+azure-ai-projects>=1.0.0
+azure-identity>=1.0.0
+openai>=1.0.0
+agent-framework[foundry]>=1.0.0
+azure-monitor-opentelemetry
+opentelemetry-instrumentation-openai-v2
+azure-ai-evaluation>=1.0.0
+python-dotenv
+pandas
+openpyxl
+requests
