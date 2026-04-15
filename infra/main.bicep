@@ -96,10 +96,10 @@ resource foundry 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
 }
 
 // ============================================================================
-// Model Deployment
+// Model Deployments
 // ============================================================================
 
-resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025-04-01-preview' = {
+resource deployGpt41 'Microsoft.CognitiveServices/accounts/deployments@2025-04-01-preview' = {
   parent: foundry
   name: modelName
   sku: {
@@ -111,6 +111,96 @@ resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025-
       format: 'OpenAI'
       name: modelName
       version: modelVersion
+    }
+  }
+}
+
+resource deployGpt5 'Microsoft.CognitiveServices/accounts/deployments@2025-04-01-preview' = {
+  parent: foundry
+  name: 'gpt-5'
+  dependsOn: [deployGpt41]
+  sku: {
+    name: 'GlobalStandard'
+    capacity: 30
+  }
+  properties: {
+    model: {
+      format: 'OpenAI'
+      name: 'gpt-5'
+      version: '2025-06-01'
+    }
+  }
+}
+
+resource deployGpt5Mini 'Microsoft.CognitiveServices/accounts/deployments@2025-04-01-preview' = {
+  parent: foundry
+  name: 'gpt-5-mini'
+  dependsOn: [deployGpt5]
+  sku: {
+    name: 'GlobalStandard'
+    capacity: 30
+  }
+  properties: {
+    model: {
+      format: 'OpenAI'
+      name: 'gpt-5-mini'
+      version: '2025-06-01'
+    }
+  }
+}
+
+resource deployGpt41Mini 'Microsoft.CognitiveServices/accounts/deployments@2025-04-01-preview' = {
+  parent: foundry
+  name: 'gpt-4.1-mini'
+  dependsOn: [deployGpt5Mini]
+  sku: {
+    name: 'GlobalStandard'
+    capacity: 30
+  }
+  properties: {
+    model: {
+      format: 'OpenAI'
+      name: 'gpt-4.1-mini'
+      version: '2025-04-14'
+    }
+  }
+}
+
+resource deployGpt41Nano 'Microsoft.CognitiveServices/accounts/deployments@2025-04-01-preview' = {
+  parent: foundry
+  name: 'gpt-4.1-nano'
+  dependsOn: [deployGpt41Mini]
+  sku: {
+    name: 'GlobalStandard'
+    capacity: 30
+  }
+  properties: {
+    model: {
+      format: 'OpenAI'
+      name: 'gpt-4.1-nano'
+      version: '2025-04-14'
+    }
+  }
+}
+
+// ============================================================================
+// Application Insights Connection — auto-connects App Insights to Foundry
+// ============================================================================
+
+resource appInsightsConnection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01-preview' = {
+  name: 'appinsights-connection'
+  parent: foundry
+  properties: {
+    category: 'AppInsights'
+    target: appInsights.id
+    authType: 'ApiKey'
+    isSharedToAll: true
+    credentials: {
+      key: appInsights.properties.ConnectionString
+    }
+    metadata: {
+      ApiType: 'Azure'
+      ResourceId: appInsights.id
     }
   }
 }
@@ -179,7 +269,7 @@ resource assignLogAnalyticsReader 'Microsoft.Authorization/roleAssignments@2022-
 output accountName string = foundry.name
 output projectName string = foundry::project.name
 output projectEndpoint string = 'https://${foundry.name}.services.ai.azure.com/api/projects/${foundry::project.name}'
-output modelDeploymentName string = modelDeployment.name
+output modelDeploymentName string = deployGpt41.name
 output appInsightsConnectionString string = appInsights.properties.ConnectionString
 output appInsightsName string = appInsights.name
 output foundryResourceId string = foundry.id

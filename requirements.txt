@@ -1,8 +1,8 @@
 azure-ai-projects>=1.0.0
 azure-identity>=1.0.0
 openai>=1.0.0
-agent-framework[foundry]>=1.0.0
-azure-monitor-opentelemetry
+agent-framework>=1.0.0
+azure-monitor-opentelemetry>=1.8.7
 opentelemetry-instrumentation-openai-v2
 azure-ai-evaluation>=1.0.0
 python-dotenv

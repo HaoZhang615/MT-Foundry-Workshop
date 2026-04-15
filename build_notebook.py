@@ -30,15 +30,38 @@ and walks you through progressively advanced agent patterns.
 # SECTION 0: Prerequisites
 # ======================================================================
 md("""---
-## Section 0: Prerequisites & Infrastructure
+## Section 0: Environment Setup & Prerequisites
 
-Before starting, make sure you have:
-- **Python 3.10+** installed
-- **Azure CLI** (`az`) installed
-- An **Azure subscription**
-- Run `az login` in your terminal
+Before running any code, you need to create a Python virtual environment and install dependencies.
 
-The cell below validates all prerequisites automatically.
+### Step 1: Open a Terminal in VS Code
+
+Press `` Ctrl+` `` (or **Terminal → New Terminal**) and run the following commands:
+
+```bash
+# Install uv if you don't have it yet
+# Windows (PowerShell):
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+# macOS / Linux:
+# curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Create virtual environment and install dependencies
+uv venv .venv --python 3.12
+uv pip install -r requirements.txt --python .venv
+```
+
+### Step 2: Select the `.venv` kernel
+
+1. Click **"Select Kernel"** in the top-right corner of this notebook
+2. Choose **"Python Environments..."**
+3. Select **`.venv (Python 3.12.x)`** from this project folder
+
+> ⚠️ **Do not run any cells** until the kernel indicator in the top-right shows `.venv`.
+
+### Step 3: Verify setup
+
+Once the kernel is set, run the cell below to validate everything is working.
+""")
 """)
 
 code("""# --- Prerequisite Validation & Helper Setup ---
@@ -227,12 +250,21 @@ All Azure resources are deployed. You can view your project in the
 # ======================================================================
 md("### Section 0B: Environment Setup & Tracing")
 
-code("""# --- Install Python Dependencies ---
-subprocess.run(
-    [sys.executable, "-m", "pip", "install", "-r", str(Path.cwd() / "requirements.txt"), "-q"],
-    check=True
-)
-print("✅ Python dependencies installed")
+code("""# --- Verify Virtual Environment ---
+# Dependencies were installed in Step 1. This cell confirms the kernel is using the .venv.
+import sys
+from pathlib import Path
+
+venv_path = Path.cwd() / ".venv"
+exe = Path(sys.executable).resolve()
+
+if str(venv_path.resolve()) in str(exe):
+    print(f"✅ Running inside .venv: {exe}")
+else:
+    print(f"⚠️  Current Python: {exe}")
+    print(f"    Expected .venv at: {venv_path}")
+    print("    → Go back to Step 2 and select the .venv kernel before continuing!")
+    raise RuntimeError("Wrong kernel — select the .venv Python interpreter")
 """)
 
 code("""# --- Imports & Authentication ---
