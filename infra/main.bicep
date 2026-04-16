@@ -127,7 +127,7 @@ resource deployGpt5 'Microsoft.CognitiveServices/accounts/deployments@2025-04-01
     model: {
       format: 'OpenAI'
       name: 'gpt-5'
-      version: '2025-06-01'
+      version: '2025-08-07'
     }
   }
 }
@@ -144,7 +144,7 @@ resource deployGpt5Mini 'Microsoft.CognitiveServices/accounts/deployments@2025-0
     model: {
       format: 'OpenAI'
       name: 'gpt-5-mini'
-      version: '2025-06-01'
+      version: '2025-08-07'
     }
   }
 }
