@@ -3,9 +3,9 @@
 ## Overview
 
 This hands-on lab walks you through building AI agents using Microsoft Foundry,
-from infrastructure deployment to multi-agent orchestration. The notebook is
-self-contained: it provisions all Azure resources, configures tracing, and
-guides you through progressively advanced agent patterns.
+from infrastructure deployment to multi-agent orchestration. The workshop is
+split into six progressive notebooks that provision Azure resources, configure
+tracing, and guide you through increasingly advanced agent patterns.
 
 ## Prerequisites
 
@@ -29,45 +29,46 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-> The notebook validates all prerequisites automatically in its first cells.
+> Notebook `00-setup.ipynb` validates all prerequisites automatically in its first cells.
 
 ## Quick Start
 
 1. **Clone or download** this folder to your local machine.
 2. **Open** the folder in VS Code.
-3. **Open** `foundry_workshop_lab.ipynb`.
+3. **Open** `00-setup.ipynb`.
 4. **Run the first code cell** — it creates a `.venv` and installs all dependencies using `uv`.
 5. **Select the `.venv` kernel** — click "Select Kernel" in the top-right, choose "Python Environments…", and pick `.venv`.
-6. **Run cells sequentially** — the notebook will:
-   - Validate prerequisites
-   - Deploy all Azure infrastructure (AI Services, model, App Insights)
-   - Walk you through agent development
+6. **Run cells sequentially** — the notebook will validate prerequisites and deploy all Azure infrastructure.
+7. **Proceed through the remaining notebooks in order** (`01` → `02` → `03` → `04` → `05`).
 
 ## Workshop Structure
 
-| Section | Duration | Topics |
-|---------|----------|--------|
-| **Section 0** | ~10 min | Prerequisites, Azure infrastructure deployment, tracing setup |
-| **Section 1** | ~8 min | Your first Foundry agent — create, chat, multi-turn |
-| **Section 2** | ~10 min | Tool usage — function tools, web search, file search, CSV |
-| **Section 3** | ~7 min | Prompt engineering — structured output, few-shot |
-| **Section 4** | ~10 min | Multi-step reasoning and evaluation |
-| **Section 5** | ~15 min | Multi-agent orchestration — sequential, concurrent, handoff, group chat |
-| **Section 6** | ~20 min | Upload your own data |
-| **Section 7** | ~25 min | Build your custom agent |
-| **Section 8** | ~30 min | Build your multi-agent workflow |
-| **Section 9** | ~15 min | Wrap-up and next steps |
+| Notebook | Duration | Topics |
+|----------|----------|--------|
+| **00-setup.ipynb** | ~10 min | Prerequisites validation, Azure infrastructure deployment (AI Services, models, App Insights), tracing setup |
+| **01-first-agent.ipynb** | ~8 min | Your first Foundry agent — create, chat, multi-turn, grounding with MCP |
+| **02-tools.ipynb** | ~10 min | Tool usage — function calling, web search, file search (RAG), code interpreter |
+| **03-prompts-eval.ipynb** | ~7 min | Prompt engineering — structured output, few-shot, multi-step reasoning, evaluation |
+| **04-orchestration.ipynb** | ~15 min | Multi-agent orchestration — sequential, concurrent, handoff, group chat, RFX workflow |
+| **05-byod.ipynb** | ~60 min | Bring your own data — upload documents, build custom agents, multi-agent workflows |
 
 ## Files
 
 ```
-├── foundry_workshop_lab.ipynb   # Main workshop notebook
+├── 00-setup.ipynb               # Part 0: Environment setup & Azure infrastructure
+├── 01-first-agent.ipynb         # Part 1: First Foundry agent & MCP grounding
+├── 02-tools.ipynb               # Part 2: Function, web, file search & code interpreter tools
+├── 03-prompts-eval.ipynb        # Part 3: Prompt engineering & evaluation
+├── 04-orchestration.ipynb       # Part 4: Multi-agent orchestration patterns
+├── 05-byod.ipynb                # Part 5: Bring your own data & custom agents
+├── link_checker.py              # URL validation utility (used by RFX workflow)
 ├── requirements.txt             # Python dependencies
 ├── infra/
-│   └── main.bicep               # Azure infrastructure template
+│   ├── main.bicep               # Azure infrastructure template (Bicep)
+│   └── main.json                # Compiled ARM template
 ├── sample_data/
 │   ├── product_spec.md          # Demo document for file search
-│   ├── sales_data.csv           # Demo CSV for function tools
+│   ├── sales_data.csv           # Demo CSV for code interpreter
 │   └── eval_dataset.jsonl       # Synthetic evaluation dataset
 └── README.md                    # This file
 ```
@@ -84,7 +85,7 @@ Your agents are **not deleted** — they remain in your Foundry project. You can
 ## Optional Cleanup
 
 To delete all Azure resources created during the workshop, run the commented-out
-cell at the end of the notebook, or run:
+cell at the end of `00-setup.ipynb`, or run:
 
 ```bash
 az group delete -n <your-resource-group-name> --yes --no-wait
