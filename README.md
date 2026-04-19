@@ -40,6 +40,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 5. **Select the `.venv` kernel** — click "Select Kernel" in the top-right, choose "Python Environments…", and pick `.venv`.
 6. **Run cells sequentially** — the notebook will validate prerequisites and deploy all Azure infrastructure.
 7. **Proceed through the remaining notebooks in order** (`01` → `02` → `03` → `04` → `05`).
+8. **Optionally**, run `e2e-agent-lifecycle.ipynb` for a full lifecycle demo (create → test → trace → evaluate → publish → monitor).
 
 ## Workshop Structure
 
@@ -51,6 +52,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 | **03-prompts-eval.ipynb** | ~7 min | Prompt engineering — structured output, few-shot, multi-step reasoning, evaluation |
 | **04-orchestration.ipynb** | ~15 min | Multi-agent orchestration — sequential, concurrent, handoff, group chat, RFX workflow |
 | **05-byod.ipynb** | ~60 min | Bring your own data — upload documents, build custom agents, multi-agent workflows |
+| **e2e-agent-lifecycle.ipynb** | ~30 min | End-to-end agent lifecycle — create, test, trace, evaluate, publish, monitor |
 
 ## Files
 
@@ -61,15 +63,20 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ├── 03-prompts-eval.ipynb        # Part 3: Prompt engineering & evaluation
 ├── 04-orchestration.ipynb       # Part 4: Multi-agent orchestration patterns
 ├── 05-byod.ipynb                # Part 5: Bring your own data & custom agents
+├── e2e-agent-lifecycle.ipynb    # End-to-end agent lifecycle demo
+├── helpdesk_eval_results.json   # Sample evaluation results (IT helpdesk agent)
 ├── link_checker.py              # URL validation utility (used by RFX workflow)
 ├── requirements.txt             # Python dependencies
 ├── infra/
 │   ├── main.bicep               # Azure infrastructure template (Bicep)
 │   └── main.json                # Compiled ARM template
 ├── sample_data/
+│   ├── eval_dataset.jsonl       # Synthetic evaluation dataset
+│   ├── helpdesk_eval_dataset.jsonl          # IT helpdesk evaluation dataset
+│   ├── helpdesk_eval_dataset_portal.jsonl   # Helpdesk eval dataset (portal format)
+│   ├── it_helpdesk_faq.md       # IT helpdesk knowledge base (FAQ)
 │   ├── product_spec.md          # Demo document for file search
-│   ├── sales_data.csv           # Demo CSV for code interpreter
-│   └── eval_dataset.jsonl       # Synthetic evaluation dataset
+│   └── sales_data.csv           # Demo CSV for code interpreter
 └── README.md                    # This file
 ```
 
