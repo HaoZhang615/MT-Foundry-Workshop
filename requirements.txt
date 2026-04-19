@@ -5,6 +5,7 @@ agent-framework>=1.0.0
 azure-monitor-opentelemetry>=1.8.7
 opentelemetry-instrumentation-openai-v2
 azure-ai-evaluation>=1.0.0
+azure-monitor-query>=1.0.0
 python-dotenv
 pandas
 openpyxl
