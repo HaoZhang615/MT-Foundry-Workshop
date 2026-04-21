@@ -38,21 +38,34 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 3. **Open** `00-setup.ipynb`.
 4. **Run the first code cell** — it creates a `.venv` and installs all dependencies using `uv`.
 5. **Select the `.venv` kernel** — click "Select Kernel" in the top-right, choose "Python Environments…", and pick `.venv`.
-6. **Run cells sequentially** — the notebook will validate prerequisites and deploy all Azure infrastructure.
-7. **Proceed through the remaining notebooks in order** (`01` → `02` → `03` → `04` → `05`).
-8. **Optionally**, run `e2e-agent-lifecycle.ipynb` for a full lifecycle demo (create → test → trace → evaluate → publish → monitor).
+6. **Choose your path:**
+   - **Self-deployed infrastructure** — run Section 0A cells sequentially to deploy all Azure resources via Bicep.
+   - **Pre-provisioned resources** — run the **Optional** cell (right after prerequisite validation) to connect to an existing Foundry resource and deploy App Insights. Then skip Section 0A.
+7. **Run Section 0B cells** (Verify Virtual Environment → Imports & Authentication → Verify Connectivity).
+8. **Proceed through the remaining notebooks in order** (`01` → `02` → `03` → `04` → `05`).
+9. **Optionally**, run `e2e-agent-lifecycle.ipynb` for a full lifecycle demo (create → test → trace → evaluate → publish → monitor).
+
+### Using Pre-Provisioned Resources
+
+If your organization already has an AI Foundry resource with model deployments and RBAC assigned:
+
+1. In `00-setup.ipynb`, run the **Prerequisite Validation** cell first.
+2. Edit the 4 variables in the **Optional** cell (resource group, account name, project name, model deployment).
+3. Run the cell — it will connect to your existing resource, deploy App Insights if needed (or reuse an existing one), and save the config to `workshop_config.json`.
+4. **Skip Section 0A entirely** and continue with Section 0B.
+5. All other notebooks automatically detect `workshop_config.json` and use your pre-provisioned resources.
 
 ## Workshop Structure
 
 | Notebook | Duration | Topics |
 |----------|----------|--------|
-| **00-setup.ipynb** | ~10 min | Prerequisites validation, Azure infrastructure deployment (AI Services, models, App Insights), tracing setup |
+| **00-setup.ipynb** | ~10 min | Prerequisites validation, Azure infrastructure deployment (AI Services, models, App Insights), tracing setup. Optional cell for pre-provisioned environments. |
 | **01-first-agent.ipynb** | ~8 min | Your first Foundry agent — create, chat, multi-turn, grounding with MCP |
 | **02-tools.ipynb** | ~10 min | Tool usage — function calling, web search, file search (RAG), code interpreter |
 | **03-prompts-eval.ipynb** | ~7 min | Prompt engineering — structured output, few-shot, multi-step reasoning, evaluation |
 | **04-orchestration.ipynb** | ~15 min | Multi-agent orchestration — sequential, concurrent, handoff, group chat, RFX workflow |
 | **05-byod.ipynb** | ~60 min | Bring your own data — upload documents, build custom agents, multi-agent workflows |
-| **e2e-agent-lifecycle.ipynb** | ~30 min | End-to-end agent lifecycle — create, test, trace, evaluate, publish, monitor |
+| **e2e-agent-lifecycle.ipynb** | ~30 min | End-to-end agent lifecycle — create, test, trace, evaluate, publish (eastus2 only), monitor |
 
 ## Files
 
@@ -69,6 +82,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ├── requirements.txt             # Python dependencies
 ├── infra/
 │   ├── main.bicep               # Azure infrastructure template (Bicep)
+│   ├── appinsights.bicep        # Additive App Insights template (for pre-provisioned environments)
 │   └── main.json                # Compiled ARM template
 ├── sample_data/
 │   ├── eval_dataset.jsonl       # Synthetic evaluation dataset
@@ -84,7 +98,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 Your agents are **not deleted** — they remain in your Foundry project. You can:
 
-- Find them in the **Foundry portal → Agents**
+- Find them in the **Foundry portal → Agents** (sorted by notebook prefix: `01-`, `02-`, `03-`, `04-`, `e2e-`)
 - Review traces in **Foundry portal → Tracing**
 - View evaluation results in **Foundry portal → Evaluation**
 - Continue building by adding tools, data, or deploying as hosted agents

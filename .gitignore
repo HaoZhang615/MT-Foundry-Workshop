@@ -1,6 +1,7 @@
 # Project-specific
 rfx_agents_test.py
 Workshop-prep.md
+workshop_config.json
 
 # Python
 __pycache__/
